@@ -1,0 +1,41 @@
+﻿@model IEnumerable<long3x.Data.Entities.TraderInfoEntity>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table>
+        <tr>
+            <td>ChannelId</td>
+            <td>Coin1</td>
+            <td>Coin2</td>
+            <td>Leverage</td>
+            <td>LongShort</td>
+            <td>EntryZoneMin</td>
+            <td>EntryZoneMax</td>
+            <td>Targets</td>
+            <td>StopLoss</td>
+            <td>TradingType</td> 
+            <td>AdditionalInfo</td>
+            <td>Ts</td>
+        </tr>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>@row.ChannelId</td>
+                <td>@row.Coin1</td>
+                <td>@row.Coin2</td>
+                <td>@row.Leverage.ToString()</td>
+                <td>@row.LongShort</td>
+                <td>@row.EntryZoneMin</td>
+                <td>@row.EntryZoneMax</td>
+                <td>@row.Targets</td>
+                <td>@row.StopLoss</td>
+                <td>@row.TradingType</td> 
+                <td>@row.AdditionalInfo</td>
+                <td>@row.Ts</td>
+            </tr>
+        }
+    </table>
+</div>
