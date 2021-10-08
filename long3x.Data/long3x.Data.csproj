@@ -7,7 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="6.0.0-rc.1.21451.13" />
-    <PackageReference Include="MySql.Data" Version="6.9.8" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="SqlTableDependency" Version="8.5.8" />
     <PackageReference Include="SSH.NET" Version="2020.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0-rc.1.21451.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
@@ -17,6 +18,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\long3x.Common\long3x.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.10\ref\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

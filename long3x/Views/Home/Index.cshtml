@@ -1,11 +1,11 @@
-﻿@model IEnumerable<long3x.Data.Entities.TraderInfoEntity>
+﻿@model IEnumerable<long3x.Data.Entities.SignalEntity>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <table>
+    <h1 id="test" class="display-4">Welcome</h1>
+    <table id="table">
         <tr>
             <td>ChannelId</td>
             <td>Coin1</td>
@@ -16,13 +16,13 @@
             <td>EntryZoneMax</td>
             <td>Targets</td>
             <td>StopLoss</td>
-            <td>TradingType</td> 
+            <td>TradingType</td>
             <td>AdditionalInfo</td>
             <td>Ts</td>
         </tr>
         @foreach (var row in Model)
         {
-            <tr>
+            <tr class="data-row">
                 <td>@row.ChannelId</td>
                 <td>@row.Coin1</td>
                 <td>@row.Coin2</td>
@@ -32,10 +32,15 @@
                 <td>@row.EntryZoneMax</td>
                 <td>@row.Targets</td>
                 <td>@row.StopLoss</td>
-                <td>@row.TradingType</td> 
+                <td>@row.TradingType</td>
                 <td>@row.AdditionalInfo</td>
                 <td>@row.Ts</td>
             </tr>
         }
     </table>
 </div>
+
+
+<script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/signals.js"></script>

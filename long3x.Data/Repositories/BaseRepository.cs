@@ -1,80 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dapper;
-using long3x.Common.ConfigurationModels;
-using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
-using Renci.SshNet;
+using long3x.Data.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace long3x.Data.Repositories
 {
     public abstract class BaseRepository
     {
-        private readonly DatabaseConnectionSettings databaseOptions;
-        private readonly SshConnectionSettings sshConnectionOptions;
-        //private readonly ILogger logger;
-       
-        protected BaseRepository(IOptions<DatabaseConnectionSettings> databaseOptions, IOptions<SshConnectionSettings> sshConnectionOptions)
+        private readonly ILogger logger;
+        private readonly IDatabaseConnectionHelper databaseConnectionHelper;
+
+        protected BaseRepository(ILogger logger, IDatabaseConnectionHelper databaseConnectionHelper)
         {
-            this.databaseOptions = databaseOptions.Value;
-            this.sshConnectionOptions = sshConnectionOptions.Value;
+            this.logger = logger;
+            this.databaseConnectionHelper = databaseConnectionHelper;
         }
 
         protected IEnumerable<T> ExecuteQuery<T>(string query)
         {
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-            var (sshClient, localPort) = ConnectSsh(
-                sshConnectionOptions.HostName,
-                sshConnectionOptions.UserName,
-                sshConnectionOptions.SshKeyFile,
-                databaseServer: databaseOptions.DatabaseServer);
-            using (sshClient)
-            {
-                var connectionStringBuilder = new MySqlConnectionStringBuilder
-                {
-                    Server = "127.0.0.1",
-                    Port = localPort,
-                    UserID = databaseOptions.UserId,
-                    Password = databaseOptions.Password,
-                    Database = databaseOptions.Database
-                };
-                using var connection = new MySqlConnection(connectionStringBuilder.ConnectionString);
-                try
-                {
-                    connection.Open();
-                    //logger.LogInformation($"[SQL] Executing query: {query}");
-                    var result = connection.Query<T>(query);
+            logger.LogInformation($"[SQL] Execute query: {query}");
+            var result = databaseConnectionHelper.Execute(connection => connection.Query<T>(query));
 
-                    return result;
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            return result;
         }
 
-        private (SshClient SshClient, uint Port) ConnectSsh(string sshHostName, string sshUserName,
-            string sshKeyFile = null, int sshPort = 22, string databaseServer = "localhost", int databasePort = 3306)
+        protected T ExecuteScalar<T>(string query)
         {
-            if (string.IsNullOrEmpty(sshHostName))
-                throw new ArgumentException($"{nameof(sshHostName)} must be specified.", nameof(sshHostName));
-            if (string.IsNullOrEmpty(databaseServer))
-                throw new ArgumentException($"{nameof(databaseServer)} must be specified.", nameof(databaseServer));
+            logger.LogInformation($"[SQL] Execute scalar: {query}");
+            var result = databaseConnectionHelper.Execute(connection => connection.ExecuteScalar<T>(query));
 
-            var authenticationMethods = new List<AuthenticationMethod>();
-            if (!string.IsNullOrEmpty(sshKeyFile))
-            {
-                authenticationMethods.Add(new PrivateKeyAuthenticationMethod(sshUserName, new PrivateKeyFile(sshKeyFile)));
-            }
-            var sshClient = new SshClient(new ConnectionInfo(sshHostName, sshPort, sshUserName, authenticationMethods.ToArray()));
-            sshClient.Connect();
-
-            var forwardedPort = new ForwardedPortLocal("127.0.0.1", databaseServer, (uint)databasePort);
-            sshClient.AddForwardedPort(forwardedPort);
-            forwardedPort.Start();
-
-            return (sshClient, forwardedPort.BoundPort);
+            return result;
         }
-	}
+
+    }
 }

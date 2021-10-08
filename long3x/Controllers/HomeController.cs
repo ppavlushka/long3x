@@ -1,20 +1,21 @@
-﻿using long3x.Data.Interfaces;
+﻿using System.Linq;
+using long3x.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace long3x.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITraderInfoRepository traderInfoRepository;
+        private readonly ISignalRepository signalRepository;
 
-        public HomeController(ITraderInfoRepository traderInfoRepository)
+        public HomeController(ISignalRepository signalRepository)
         {
-            this.traderInfoRepository = traderInfoRepository;
+            this.signalRepository = signalRepository;
         }
 
         public IActionResult Index()
         {
-            var data = traderInfoRepository.GetAllTraderInfo();
+            var data = signalRepository.GetAllSignals().Reverse();
             return View(data);
         }
     }

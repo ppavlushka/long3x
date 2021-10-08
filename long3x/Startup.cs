@@ -1,10 +1,11 @@
+using long3x.Hubs;
 using long3x.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using long3x.Data.Interfaces;
 
 namespace long3x
 {
@@ -23,7 +24,10 @@ namespace long3x
             services.AddControllersWithViews();
             services.RegisterServices(Configuration);
             services.RegisterConfigurationSections(Configuration);
-            services.AddSingleton(services => services.GetService(typeof(ILogger)));
+            services.AddSignalR();
+            services.AddSingleton<ICustomObserver, DatabaseChangeObserver>();
+
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +40,6 @@ namespace long3x
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -51,6 +54,7 @@ namespace long3x
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<SignalsUpdatesHub>("/UpdateSignals");
             });
         }
     }

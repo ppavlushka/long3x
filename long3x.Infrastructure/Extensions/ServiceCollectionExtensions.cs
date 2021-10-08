@@ -1,6 +1,7 @@
 ﻿using long3x.Common.ConfigurationModels;
 using long3x.Data.Interfaces;
 using long3x.Data.Repositories;
+using long3x.Data.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,9 @@ namespace long3x.Infrastructure.Extensions
     {
         public static void RegisterServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            serviceCollection.AddTransient<ITraderInfoRepository, TraderInfoRepository>();
+            serviceCollection.AddTransient<ISignalRepository, SignalRepository>();
+            serviceCollection.AddTransient<IDatabaseConnectionHelper, DatabaseConnectionHelper>();
+            serviceCollection.AddSingleton<IDatabaseChangeTrackingService, DatabaseChangeTrackingService>();
         }
 
         public static void RegisterConfigurationSections(

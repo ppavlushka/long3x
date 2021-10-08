@@ -2,6 +2,8 @@
 {
     public class SshConnectionSettings
     {
+        public bool UseSshConnection { get; set; }
+
         public string HostName { get; set; }
 
         public string UserName { get; set; }

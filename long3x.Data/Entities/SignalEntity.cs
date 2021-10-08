@@ -1,6 +1,9 @@
-﻿namespace long3x.Data.Entities
+﻿using System;
+
+namespace long3x.Data.Entities
 {
-    public class TraderInfoEntity
+    [Serializable]
+    public class SignalEntity
     {
         public string ChannelId { get; set; }
 
