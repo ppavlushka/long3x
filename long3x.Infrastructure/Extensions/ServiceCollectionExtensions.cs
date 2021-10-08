@@ -1,7 +1,7 @@
 ﻿using long3x.Common.ConfigurationModels;
+using long3x.Data.Helpers;
 using long3x.Data.Interfaces;
 using long3x.Data.Repositories;
-using long3x.Data.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +13,7 @@ namespace long3x.Infrastructure.Extensions
         {
             serviceCollection.AddTransient<ISignalRepository, SignalRepository>();
             serviceCollection.AddTransient<IDatabaseConnectionHelper, DatabaseConnectionHelper>();
-            serviceCollection.AddSingleton<IDatabaseChangeTrackingService, DatabaseChangeTrackingService>();
+            serviceCollection.AddSingleton<ICustomObserversHelper, CustomObserversHelper > ();
         }
 
         public static void RegisterConfigurationSections(

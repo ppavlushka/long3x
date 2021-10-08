@@ -4,6 +4,8 @@
     {
         public string DatabaseServer { get; set; }
 
+        public uint DatabasePort { get; set; }
+
         public string Database { get; set; }
 
         public string UserId { get; set; }

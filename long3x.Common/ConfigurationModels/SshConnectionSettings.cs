@@ -9,5 +9,7 @@
         public string UserName { get; set; }
 
         public string SshKeyFile { get; set; }
+
+        public string BoundHost { get; set; }
     }
 }
