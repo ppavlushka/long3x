@@ -30,7 +30,8 @@ namespace long3x.Data.ApiHandler
 
         public Dictionary<string, decimal> GetPriceDictionary(IEnumerable<string> coins)
         {
-            logger.LogInformation("[API] Get prices from API");
+            
+            var errorList = new List<string>();
             var resultDictionary = new Dictionary<string, decimal>();
             var response = client.GetAsync(apiConnectionSettings.AllPriceUrl).GetAwaiter().GetResult();
             var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -40,13 +41,19 @@ namespace long3x.Data.ApiHandler
                 var currentCoinPriceEntity = jsonResult.FirstOrDefault(x => x.Symbol.Equals(coin));
                 if (currentCoinPriceEntity == null)
                 {
-                    logger.LogWarning($"[API] Can't find price for {coin}");
+                    errorList.Add(coin);
                 }
                 else
                 {
                     resultDictionary.TryAdd(coin, currentCoinPriceEntity.Price);
                 }
             }
+
+            if (errorList.Count > 0)
+            {
+                logger.LogWarning($"[API] Can't find price for {String.Join(", ",errorList)}");
+            }
+            
 
             return resultDictionary;
         }
