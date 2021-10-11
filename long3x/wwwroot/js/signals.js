@@ -22,6 +22,7 @@ function UpdateSignals(data) {
         rowHtml += GetCell(row["Coin2"]);
         rowHtml += GetCell(row["Leverage"]);
         rowHtml += GetCell(row["LongShort"]);
+        rowHtml += GetCell(row["Risk"]);
         rowHtml += GetCell(row["EntryZoneMin"]);
         rowHtml += GetCell(row["EntryZoneMax"]);
         rowHtml += GetCell(row["Targets"]);
@@ -29,7 +30,7 @@ function UpdateSignals(data) {
         rowHtml += GetCell(row["TradingType"]);
         rowHtml += GetCell(row["AdditionalInfo"]);
         rowHtml += GetCell(row["Ts"]);
-        rowHtml += '<td class="hidden">' + row["FullCoinDescription"] + '</td>';
+        rowHtml += '<td class="price-row" name="' + row["FullCoinDescription"]+'">' + row["Price"] + '</td>';
         rowHtml += "</tr>";
         $("#table").append(rowHtml);
     });

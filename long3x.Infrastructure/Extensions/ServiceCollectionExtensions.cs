@@ -21,7 +21,15 @@ namespace long3x.Infrastructure.Extensions
             serviceCollection.AddTransient<ISignalService, SignalService>();
             serviceCollection.AddTransient<IBinanceApiHandler, BinanceApiHandler>();
             serviceCollection.AddSingleton<ICustomObserversHelper, CustomObserversHelper > ();
-            serviceCollection.AddSingleton<ICurrentCoinsHelper, CurrentCoinsHelper>();
+            serviceCollection.RegisterCurrentCoinsHelper();
+        }
+
+        public static void RegisterCurrentCoinsHelper(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<CurrentCoinsHelper>(x =>
+                new CurrentCoinsHelper(x.GetRequiredService<ISignalRepository>()));
+            serviceCollection.AddSingleton<ICurrentCoinsHelper, CurrentCoinsHelper>(x => x.GetRequiredService<CurrentCoinsHelper>());
+            serviceCollection.AddSingleton<ICustomObserver, CurrentCoinsHelper>(x => x.GetRequiredService<CurrentCoinsHelper>());
         }
 
         public static void AddAutoMapper(this IServiceCollection serviceCollection)
