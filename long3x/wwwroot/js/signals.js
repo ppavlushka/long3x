@@ -1,9 +1,21 @@
 ﻿var connection = new signalR.HubConnectionBuilder().withUrl("/UpdateSignals").build();
-connection.on("UpdateSignals", function (data) {
+connection.on("UpdateSignals", UpdateSignals);
+connection.on("UpdatePrices", UpdatePrices);
+connection.start();
+
+function UpdatePrices(data) {
+    $(".price-row").each(function() {
+        var coinName = $(this).attr("name");
+        $(this).text(data[coinName]);
+    });
+    console.log(object.values(data));
+}
+
+function UpdateSignals(data) {
     $(".data-row").remove();
     var json = jQuery.parseJSON(data);
     console.log(json);
-    json.forEach(function(row) {
+    json.forEach(function (row) {
         var rowHtml = '<tr class="data-row">';
         rowHtml += GetCell(row["ChannelId"]);
         rowHtml += GetCell(row["Coin1"]);
@@ -17,11 +29,11 @@ connection.on("UpdateSignals", function (data) {
         rowHtml += GetCell(row["TradingType"]);
         rowHtml += GetCell(row["AdditionalInfo"]);
         rowHtml += GetCell(row["Ts"]);
+        rowHtml += '<td class="hidden">' + row["FullCoinDescription"] + '</td>';
         rowHtml += "</tr>";
         $("#table").append(rowHtml);
     });
-});
-connection.start();
+}
 
 function GetCell(value) {
     return "<td>" + value + "</td>";

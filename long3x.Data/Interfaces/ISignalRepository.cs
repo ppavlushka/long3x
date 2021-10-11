@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using long3x.Data.Entities;
 
 namespace long3x.Data.Interfaces
@@ -8,6 +7,6 @@ namespace long3x.Data.Interfaces
     {
         IEnumerable<SignalEntity> GetAllSignals();
 
-        DateTime GetLastOperationDate();
+        IEnumerable<string> GetDistinctSignalCoins();
     }
 }

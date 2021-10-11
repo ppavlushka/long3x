@@ -2,14 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;Development</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0-rc.1.21451.13" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0-rc.1.21451.13" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\long3x.Business\long3x.Business.csproj" />
     <ProjectReference Include="..\long3x.Common\long3x.Common.csproj" />
     <ProjectReference Include="..\long3x.Data\long3x.Data.csproj" />
   </ItemGroup>

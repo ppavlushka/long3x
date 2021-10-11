@@ -1,15 +1,14 @@
-﻿using System;
-
-namespace long3x.Data.Entities
+﻿namespace long3x.ViewModels
 {
-    [Serializable]
-    public class SignalEntity
+    public class SignalViewModel
     {
         public string ChannelId { get; set; }
 
         public string Coin1 { get; set; }
 
         public string Coin2 { get; set; }
+
+        public string FullCoinDescription => string.Concat(Coin1, Coin2);
 
         public byte Leverage { get; set; }
 
@@ -30,5 +29,7 @@ namespace long3x.Data.Entities
         public string AdditionalInfo { get; set; }
 
         public string Ts { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

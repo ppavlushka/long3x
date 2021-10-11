@@ -1,8 +1,7 @@
-﻿@model IEnumerable<long3x.Data.Entities.SignalEntity>
+﻿@model IEnumerable<long3x.ViewModels.SignalViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
-
 <div>
     <table id="table">
         <tr>
@@ -11,6 +10,7 @@
             <td>Coin2</td>
             <td>Leverage</td>
             <td>LongShort</td>
+            <td>Risk</td>
             <td>EntryZoneMin</td>
             <td>EntryZoneMax</td>
             <td>Targets</td>
@@ -18,6 +18,7 @@
             <td>TradingType</td>
             <td>AdditionalInfo</td>
             <td>Ts</td>
+            <td>Price</td>
         </tr>
         @foreach (var row in Model)
         {
@@ -27,6 +28,7 @@
                 <td>@row.Coin2</td>
                 <td>@row.Leverage.ToString()</td>
                 <td>@row.LongShort</td>
+                <td>@row.Risk</td>
                 <td>@row.EntryZoneMin</td>
                 <td>@row.EntryZoneMax</td>
                 <td>@row.Targets</td>
@@ -34,6 +36,7 @@
                 <td>@row.TradingType</td>
                 <td>@row.AdditionalInfo</td>
                 <td>@row.Ts</td>
+                <td class="price-row"name="@row.FullCoinDescription">@row.Price.ToString("G29")</td>
             </tr>
         }
     </table>

@@ -22,6 +22,7 @@ namespace long3x
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper();
             services.RegisterServices(Configuration);
             services.RegisterConfigurationSections(Configuration);
             services.AddSignalR();
